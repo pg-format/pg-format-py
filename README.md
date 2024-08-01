@@ -3,7 +3,7 @@
 [![Test](https://github.com/pg-format/pgformat/actions/workflows/test.yml/badge.svg)](https://github.com/pg-format/pgformat/actions/workflows/test.yml)
 [![PyPI](https://img.shields.io/pypi/v/pgformat?label=pypi%20package)](https://pypi.org/project/pgformat/)
 
-> Property Graph Exchange Format (PG) parser
+> Property Graph Exchange Format (PG) parser and serializer
 
 This package implements parsers and serializers to for labeled property graphs in [Property Graph Exchange Format](https://pg-format.github.io/).
 

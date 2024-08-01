@@ -1,17 +1,15 @@
-#!/usr/bin/env python
-
 import sys
 import json
 import argparse
 import lark
 
-from parser import parseStatements, parseGraph
-from serializer import serializeGraph
+from .parser import parseStatements, parseGraph
+from .serializer import serializeGraph
 
 formats = ["ndjson", "json", "pg"]
 
 
-def cli(args):
+def pgformat(args):
     parser = argparse.ArgumentParser(
         description="Parse and transform property graphs in PG Format."
     )
@@ -48,9 +46,5 @@ def cli(args):
     return 0
 
 
-def main():
-    sys.exit(cli(sys.argv[1:]))
-
-
-if __name__ == "__main__":
-    main()
+def cli():
+    sys.exit(pgformat(sys.argv[1:]))
