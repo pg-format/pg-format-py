@@ -1,0 +1,65 @@
+// 3.1 Basic Structure
+start: ( ( empty | statement ) statement_separator )* statement? empty
+identifier:  quoted_id | (UNQUOTED_START UNQUOTED_CHAR*)
+statement_separator: LINEBREAK | SPACES? "|" SPACES?
+statement: ( node | edge ) empty
+
+node: identifier labels properties
+
+///* 3.3 Nodes & 3.4 Edges */
+edge            : ( edge_identifier )? identifier DW direction DW identifier labels properties
+labels          : ( DW label )*
+properties      : ( DW property )*
+
+# TODO: n
+edge_identifier : quoted_key DW | unquoted_key DW
+direction       : directed | undirected
+directed        : "->"
+undirected      : "--"
+
+// 3.5 Labels
+label           : ":" SPACES? identifier
+
+// 3.6 Properties
+property        : key value_list
+key             : quoted_key | unquoted_key DW | unquoted_key2
+quoted_key      : quoted_id ":"
+unquoted_key    : UNQUOTED_START ( UNQUOTED_KCHAR* COLON )+
+unquoted_key2   : UNQUOTED_START UNQUOTED_KCHAR* ":"
+value_list      : DW? value ( DW? "," DW? value )*
+value           : number | boolean | quoted_string | unquoted_value
+
+COLON: ":"
+
+// 3.6.1 Property Values
+number          : /-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/
+boolean         : "true" | "false"
+unquoted_value  : UNQUOTED_START UNQUOTED_VCHAR*
+
+// 3.2 Identifiers
+UNQUOTED_CHAR.1     : /[^\x00-\x20<>"{}|^`\\]/
+UNQUOTED_VCHAR.1    : /[^\x00-\x20<>"{}|^`\\,]/
+UNQUOTED_KCHAR.1    : /[^\x00-\x20<>"{}|^`\\:]/
+UNQUOTED_START      : /[^\x00-\x20<>"'{}|^`\\:#,-]/
+
+// 3.7 Quoted Strings
+quoted_string   : "'" single_quoted* "'" | "\"" double_quoted* "\""
+quoted_id       : "'" single_quoted+ "'" | "\"" double_quoted+ "\""
+single_quoted   : unescaped | QUOT | escaped
+double_quoted   : unescaped | APOS | escaped
+unescaped       : /[^\x00-\x08\x0B\x0C\x0E-\x1F"'\\]+/
+escaped         : "\\" ( QUOT | APOS | BACKSLASH | SLASH | /[bfnrt]/ | "u" CODEPOINT )
+
+CODEPOINT: /[0-9a-fA-Z]{4}/
+APOS: "'"
+QUOT:           "\""
+SLASH:          "/"
+BACKSLASH:      "\\"
+
+// 3.8 Whitespace
+SPACES:     /[ \t]+/
+LINEBREAK:  /(\n|\r\n?)/
+COMMENT.0:  "#" /[^\r\n]*/x
+empty:      SPACES? COMMENT?
+DW:         (SPACES? COMMENT? LINEBREAK)* SPACES
+

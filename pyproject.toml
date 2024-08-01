@@ -1,0 +1,16 @@
+[project]
+name = "pgformat_nichtich"
+version = "0.0.1"
+readme = "README.md"
+dependencies = ["lark"]
+
+[project.urls]
+Homepage = "https://github.com/pg-format/pg-format-py"
+Issues = "https://github.com/pg-format/pg-format-py/issues"
+
+[project.scripts]
+pgformat = "pgformat:cli:main"
+
+[build-system]
+requires = ["flit_core>=3.4"]
+build-backend = "flit_core.buildapi"
