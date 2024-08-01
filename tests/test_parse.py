@@ -2,9 +2,12 @@ import unittest
 import json
 from pathlib import Path
 
-from pgformat import parseGraph, parseStatements
+from pgformat import parseGraph
 
 SUITE_DIR = Path(__file__).parent.resolve() / "pg-test-suite"
+
+# TODO: test parseStatements
+
 
 class TestSuite(unittest.TestCase):
 
@@ -21,8 +24,9 @@ class TestSuite(unittest.TestCase):
     def test_invalid_test_cases(self):
         invalid = json.load(open(SUITE_DIR / "pg-format-invalid.json"))
         for pg in invalid:
-            with self.assertRaises(Exception): # TODO: more specific error class
+            with self.assertRaises(Exception):  # TODO: more specific error class
                 parseGraph(pg)
+
 
 if __name__ == '__main__':
     unittest.main()

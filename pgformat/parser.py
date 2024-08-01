@@ -1,5 +1,4 @@
 from lark import Lark, Transformer, Discard, v_args
-from itertools import chain
 
 parser = Lark.open("grammar.lark", rel_to=__file__)
 
@@ -11,6 +10,7 @@ escapeCodes = {
     "t": "\t",
 }
 
+
 def mergeProperties(ps, props):
     for key, values in ps:
         if key in props:
@@ -18,6 +18,7 @@ def mergeProperties(ps, props):
         else:
             props[key] = values
     return props
+
 
 class ToStatements(Transformer):
 
@@ -31,7 +32,7 @@ class ToStatements(Transformer):
         return node
 
     def edge(self, data):
-        edge = {"type":"edge"}
+        edge = {"type": "edge"}
         if len(data) == 6:
             edge["id"] = data.pop(0)
         edge["from"] = data[0]
@@ -48,7 +49,7 @@ class ToStatements(Transformer):
     @v_args(inline=True)
     def escaped(self, code):
         if len(code) == 4:
-            return chr(int(code,16))
+            return chr(int(code, 16))
         elif code in escapeCodes:
             return escapeCodes[str(code)]
         else:
@@ -149,6 +150,7 @@ class ToStatements(Transformer):
     def start(self, statements):
         return statements
 
+
 def parseStatements(pg, duplicatedEdgeIds=False, mergeNodes=True, implicitNodes=False):
     tree = parser.parse(pg)
     transformer = ToStatements()
@@ -170,7 +172,6 @@ def parseStatements(pg, duplicatedEdgeIds=False, mergeNodes=True, implicitNodes=
                     raise Exception("Duplicated edge id!")
                 edgeId.add(e["id"])
 
-
     if mergeNodes:
         nodeId = {}
         for nd in nodes:
@@ -184,10 +185,10 @@ def parseStatements(pg, duplicatedEdgeIds=False, mergeNodes=True, implicitNodes=
         nodes = list(nodeId.values())
 
     else:
-        nodeId = set([n["id"] for s in nodes])
+        nodeId = set([n["id"] for n in nodes])
 
     def addNode(id):
-        if not id in nodeId:
+        if id not in nodeId:
             node = {"type": "node", "id": id, "labels": [], "properties": {}}
             nodeId[id] = node
             nodes.append(node)
@@ -197,7 +198,8 @@ def parseStatements(pg, duplicatedEdgeIds=False, mergeNodes=True, implicitNodes=
             addNode(e["from"])
             addNode(e["to"])
 
-    return list(nodes + edges)
+    return nodes + edges
+
 
 def parseGraph(pg, sort=False):
     statements = parseStatements(pg, implicitNodes=True)
@@ -217,7 +219,6 @@ def parseGraph(pg, sort=False):
         nodes.sort(key=lambda n: n["id"])
 
     return {
-      "nodes": nodes,
-      "edges": edges,
+        "nodes": nodes,
+        "edges": edges,
     }
-
