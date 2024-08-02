@@ -50,16 +50,19 @@ The command line client can also be called via `python -m pgformat`.
 
 ## API
 
-The package exports two functions: `parseGraph` and `parseStatements`:
+The package exports the functions `parseGraph`, `parseStatements`, and `serializeGraph`:
 
 ~~~python
-from pgformat import parseGraph, parseStatements
+from pgformat import parseGraph, parseStatements, serializeGraph
 
-graph = parseGraph("a -> b")
-statements = parseStatements("x\na -> b")
+statements = parseStatements("x\na -> b")   # list of statements
+graph = parseGraph("a -> b")                # full graph
+
+pg = serializeGraph(graph)                  # back to PG Format
 ~~~
 
-The return format consists of plain lists and arrays for direct conversion to JSON.
+The format of graph and statements is a data structure of plain lists and arrays for direct conversion to JSON.
+This may be changed in a future version.
 
 ## License
 
