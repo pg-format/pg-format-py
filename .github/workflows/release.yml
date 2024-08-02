@@ -7,6 +7,8 @@ on:
       - main
     types: 
       - completed
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,3 +24,8 @@ jobs:
         pip install flit
     - name: Build package
       run: make build
+    - name: Release package
+      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        user: nichtich
+        password: ${{ secrets.PYPI_API_TOKEN }}
