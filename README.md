@@ -1,6 +1,6 @@
 # pgformat
 
-[![Test](https://github.com/pg-format/pgformat/actions/workflows/test.yml/badge.svg)](https://github.com/pg-format/pgformat/actions/workflows/test.yml)
+[![Test](https://github.com/pg-format/pg-format-py/actions/workflows/test.yml/badge.svg)](https://github.com/pg-format/pg-format-py/actions/workflows/test.yml)
 [![PyPI](https://img.shields.io/pypi/v/pgformat?label=pypi%20package)](https://pypi.org/project/pgformat/)
 
 > Property Graph Exchange Format (PG) parser and serializer
