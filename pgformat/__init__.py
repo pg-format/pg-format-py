@@ -1,5 +1,5 @@
 """Property Graph Exchange Format (PG) parser and serializer"""
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 from .parser import parseGraph, parseStatements
 from .serializer import serializeGraph
