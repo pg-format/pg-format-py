@@ -13,3 +13,10 @@ fix:
 
 build:
 	@flit build
+
+release:
+	@echo "Run tbump new-version"
+
+deps:
+	pip install -r requirements.txt
+	pip install tbump

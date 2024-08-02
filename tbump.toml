@@ -1,0 +1,22 @@
+github_url = "https://github.com/pgformat/pg-format-py/"
+
+[version]
+current = "0.1.0"
+regex = '(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
+
+[git]
+message_template = "Release {new_version}"
+tag_template = "v{new_version}"
+
+[[file]]
+src = "pgformat/__init__.py"
+
+# run after the files have been patched and before the git commit is made
+#  [[before_commit]]
+#  name = "check changelog"
+#  cmd = "grep -q {new_version} Changelog.rst"
+
+# run some commands after the git tag and the branch have been pushed:
+[[after_push]]
+name = "merge into main"
+cmd = "git checkout main && git merge dev && git checkout dev"
