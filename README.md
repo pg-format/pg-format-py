@@ -46,6 +46,8 @@ options:
 
 The functionality is a subset of the [pgraph](https://github.com/pg-format/pgraphs) command line tool written in NodeJS.
 
+The command line client can also be called via `python -m pgformat`.
+
 ## API
 
 The package exports two functions: `parseGraph` and `parseStatements`:

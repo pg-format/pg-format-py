@@ -11,6 +11,7 @@ formats = ["ndjson", "json", "pg"]
 
 def pgformat(args):
     parser = argparse.ArgumentParser(
+        prog="pgformat",
         description="Parse and transform property graphs in PG Format."
     )
     parser.add_argument(
@@ -27,7 +28,7 @@ def pgformat(args):
     if args.source == "-":
         input = sys.stdin.read()
     else:
-        input = args.source
+        input = open(args.source).read()
 
     try:
         if args.to == "ndjson":
