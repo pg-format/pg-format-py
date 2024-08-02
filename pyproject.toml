@@ -9,6 +9,7 @@ readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version", "description"]
+dependencies = ["lark"] 
 
 [project.urls]
 Homepage = "https://github.com/pg-format/pg-format-py"
@@ -16,3 +17,4 @@ Issues = "https://github.com/pg-format/pg-format-py/issues"
 
 [project.scripts]
 pgformat = "pgformat:cli"
+
