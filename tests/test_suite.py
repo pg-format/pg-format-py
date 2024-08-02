@@ -1,5 +1,6 @@
 import unittest
 import json
+import re
 from pathlib import Path
 
 from pgformat import parseGraph
@@ -26,6 +27,17 @@ class TestSuite(unittest.TestCase):
         for pg in invalid:
             with self.assertRaises(Exception):  # TODO: more specific error class
                 parseGraph(pg)
+
+    def test_examples(self):
+        for f in Path(SUITE_DIR / "examples").glob('*.pg'):
+            graph = parseGraph(open(f).read(), sort=True)
+            jsonFile = re.sub('\\.pg$', '.json', str(f))
+            print(f)
+            if Path(jsonFile).is_file():
+                expect = json.load(open(jsonFile))
+                self.assertEqual(graph, expect)
+            else:
+                self.assertTrue(graph)
 
 
 if __name__ == '__main__':

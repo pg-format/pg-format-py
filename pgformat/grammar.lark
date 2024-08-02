@@ -27,14 +27,16 @@ quoted_key      : quoted_id ":"
 unquoted_key    : UNQUOTED_START ( UNQUOTED_KCHAR* COLON )+
 unquoted_key2   : UNQUOTED_START UNQUOTED_KCHAR* ":"
 value_list      : DW? value ( DW? "," DW? value )*
-value           : number | boolean | quoted_string | unquoted_value
 
 COLON: ":"
 
 // 3.6.1 Property Values
-number          : /-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/
-boolean         : "true" | "false"
+value           : number | boolean | quoted_string | unquoted_value
+number.2        : /-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/
+boolean.2       : TRUE | FALSE
 unquoted_value  : UNQUOTED_START UNQUOTED_VCHAR*
+TRUE            : "true"
+FALSE           : "false"
 
 // 3.2 Identifiers
 UNQUOTED_CHAR.1     : /[^\x00-\x20<>"{}|^`\\]/

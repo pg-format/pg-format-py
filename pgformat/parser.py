@@ -1,6 +1,7 @@
+import re
 from lark import Lark, Transformer, Discard, v_args
 
-parser = Lark.open("grammar.lark", rel_to=__file__)
+parser = Lark.open("grammar.lark", rel_to=__file__, parser='earley')
 
 escapeCodes = {
     "b": "\b",
@@ -18,6 +19,16 @@ def mergeProperties(ps, props):
         else:
             props[key] = values
     return props
+
+
+def parseNumber(n):
+    if "." in n or "e" in n or "E" in n:
+        n = float(n)
+        if n.is_integer():
+            n = int(n)
+    else:
+        n = int(n)
+    return n
 
 
 class ToStatements(Transformer):
@@ -131,6 +142,17 @@ class ToStatements(Transformer):
     def value(self, children):
         return children[0]
 
+    def unquoted_value(self, children):
+        v = ''.join(children)
+        if v == "true":
+            return True
+        elif v == "false":
+            return False
+        elif re.match('^-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?$', v):
+            return parseNumber(v)
+        else:
+            return v
+
     def DW(self, _):
         return Discard
 
@@ -140,12 +162,11 @@ class ToStatements(Transformer):
     def value_list(self, children):
         return children
 
-    @v_args(inline=True)
-    def number(self, n):
-        if "." in n or "e" in n or "E" in n:
-            return float(n)
-        else:
-            return int(n)
+    def number(self, args):
+        return parseNumber(args[0])
+
+    def boolean(self, args):
+        return args[0] == "true"
 
     def start(self, statements):
         return statements
@@ -201,7 +222,7 @@ def parseStatements(pg, duplicatedEdgeIds=False, mergeNodes=True, implicitNodes=
     return nodes + edges
 
 
-def parseGraph(pg, sort=False):
+def parseGraph(pg, sort=True):
     statements = parseStatements(pg, implicitNodes=True)
 
     if sort:
