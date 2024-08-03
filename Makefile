@@ -20,3 +20,12 @@ release:
 deps:
 	pip install -r requirements.txt
 	pip install tbump
+
+init:
+	@echo "Setting up environment and dependencies..."
+	@git submodule update --init
+	@python -m venv .venv
+	@.venv/bin/pip install -r requirements.txt --quiet
+	@.venv/bin/pip install tbump --quiet
+	@echo "Please run: . .venv/bin/activate"
+
