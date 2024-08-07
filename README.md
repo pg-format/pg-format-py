@@ -16,10 +16,13 @@ This package implements parsers and serializers to for labeled property graphs i
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
+  - [parseGraph](#parseGraph)
+  - [parseStatements](#parseStatements)
+  - [serializeGraph](#serializeGraph)
 
 ## Install
 
-Requires Python 3.
+Requires Python 3.8 or above.
 
 ~~~sh
 pip install pgformat
@@ -65,19 +68,31 @@ pg = serializeGraph(graph)                  # back to PG Format
 The internal format of graphs and their statements is a data structure of plain lists and arrays for direct conversion to JSON.
 This may be changed in a future version.
 
-### parseGraph(str, sort=True, implicitNodes=True)
+### parseGraph
+
+~~~python
+parseGraph(str: str, sort=True, implicitNodes=True) -> dict
+~~~
 
 Parse a property graph given as string in PG Format. Returns a dict with keys `nodes` and `edges` ([PG JSON] format).
 
 Optional parameter `sort` sorts nodes and edges by their identifier, and labels by their value. Optional parameter `implicitNodes` adds nodes for node identifiers referenced in edges only.
 
-### parseStatements(str, implicitNodes=True, mergeNodes=True, duplicatedEdges=False)
+### parseStatements
+
+~~~python
+parseStatements(str: str, implicitNodes=True, mergeNodes=True, duplicatedEdges=False) -> list
+~~~
 
 Parse a list of statements given as string in PG Format. Returns a list of node and edge statements in order of appearance ([PG JSON] format).
 
 Optional parameter `mergeNodes` applies merging of nodes with same identifiers. Optional parameter `duplicatedEdges` throws an exception if set to `False`.
 
-### serializeGraph(graph)
+### serializeGraph
+
+~~~python
+serializeGraph(graph: dict) -> str
+~~~
 
 Convert a property graph to PG Format.
 

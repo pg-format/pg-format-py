@@ -61,7 +61,7 @@ def serializeEdge(edge):
     return " ".join([p for p in parts if p != ""])
 
 
-def serializeGraph(graph):
+def serializeGraph(graph: dict) -> str:
     nodes = [serializeNode(n)
              for n in graph["nodes"]] if "nodes" in graph else []
     edges = [serializeEdge(n)
