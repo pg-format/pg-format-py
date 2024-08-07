@@ -172,7 +172,7 @@ class ToStatements(Transformer):
         return statements
 
 
-def parseStatements(pg, duplicatedEdgeIds=False, mergeNodes=True, implicitNodes=False):
+def parseStatements(pg, duplicatedEdgeId=False, mergeNodes=True, implicitNodes=False):
     tree = parser.parse(pg)
     transformer = ToStatements()
     statements = transformer.transform(tree)
@@ -184,7 +184,7 @@ def parseStatements(pg, duplicatedEdgeIds=False, mergeNodes=True, implicitNodes=
     edges = [s for s in statements if s["type"] == "edge"]
 
     # TODO: move to parser to get position information
-    if not duplicatedEdgeIds:
+    if not duplicatedEdgeId:
         edgeId = set()
         for e in edges:
             if "id" in e:
@@ -222,8 +222,8 @@ def parseStatements(pg, duplicatedEdgeIds=False, mergeNodes=True, implicitNodes=
     return nodes + edges
 
 
-def parseGraph(pg, sort=True):
-    statements = parseStatements(pg, implicitNodes=True)
+def parseGraph(pg, sort=True, implicitNodes=True):
+    statements = parseStatements(pg, implicitNodes=implicitNodes)
 
     if sort:
         for s in statements:
@@ -238,6 +238,7 @@ def parseGraph(pg, sort=True):
 
     if sort:
         nodes.sort(key=lambda n: n["id"])
+        edges.sort(key=lambda e: e["id"] if "id" in e else "")
 
     return {
         "nodes": nodes,

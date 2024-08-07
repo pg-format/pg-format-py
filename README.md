@@ -9,6 +9,7 @@ This package implements parsers and serializers to for labeled property graphs i
 
 [PG Format]: https://pg-format.github.io/specification/#pg-format
 [PG JSONL]: https://pg-format.github.io/specification/#pg-jsonl
+[PG JSON]: https://pg-format.github.io/specification/#pg-json
 
 ## Table of Contents
 
@@ -61,8 +62,24 @@ graph = parseGraph("a -> b")                # full graph
 pg = serializeGraph(graph)                  # back to PG Format
 ~~~
 
-The format of graph and statements is a data structure of plain lists and arrays for direct conversion to JSON.
+The internal format of graphs and their statements is a data structure of plain lists and arrays for direct conversion to JSON.
 This may be changed in a future version.
+
+### parseGraph(str, sort=True, implicitNodes=True)
+
+Parse a property graph given as string in PG Format. Returns a dict with keys `nodes` and `edges` ([PG JSON] format).
+
+Optional parameter `sort` sorts nodes and edges by their identifier, and labels by their value. Optional parameter `implicitNodes` adds nodes for node identifiers referenced in edges only.
+
+### parseStatements(str, implicitNodes=True, mergeNodes=True, duplicatedEdges=False)
+
+Parse a list of statements given as string in PG Format. Returns a list of node and edge statements in order of appearance ([PG JSON] format).
+
+Optional parameter `mergeNodes` applies merging of nodes with same identifiers. Optional parameter `duplicatedEdges` throws an exception if set to `False`.
+
+### serializeGraph(graph)
+
+Convert a property graph to PG Format.
 
 ## License
 

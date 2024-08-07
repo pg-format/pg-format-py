@@ -62,6 +62,8 @@ def serializeEdge(edge):
 
 
 def serializeGraph(graph):
-    nodes = [serializeNode(n) for n in graph["nodes"]] if "nodes" in graph else []
-    edges = [serializeEdge(n) for n in graph["edges"]] if "edges" in graph else []
+    nodes = [serializeNode(n)
+             for n in graph["nodes"]] if "nodes" in graph else []
+    edges = [serializeEdge(n)
+             for n in graph["edges"]] if "edges" in graph else []
     return "\n".join([*nodes, *edges])

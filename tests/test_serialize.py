@@ -26,5 +26,5 @@ class TestSuite(unittest.TestCase):
     def test_fields(self):
         graph = {}
         self.assertEqual(serializeGraph(graph), "")
-        graph = {"nodes":[{"id": "1"}],"edges":[{"from":"1","to":"1"}]}
+        graph = {"nodes": [{"id": "1"}], "edges": [{"from": "1", "to": "1"}]}
         self.assertEqual(serializeGraph(graph), "1\n1 -> 1")
