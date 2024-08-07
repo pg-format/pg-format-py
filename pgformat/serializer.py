@@ -16,8 +16,11 @@ def quoteValue(s):
     return s if isinstance(s, str) and not (specialValue.match(s) or reserved.match(s)) else json.dumps(s)
 
 
-def serializeLabels(labels):
-    return " ".join([":" + quoteId(s) for s in labels])
+def serializeLabelsOf(elem):
+    if "labels" in elem:
+        return " ".join([":" + quoteId(s) for s in elem["labels"]])
+    else:
+        return ""
 
 
 def serializeValues(values):
@@ -28,15 +31,18 @@ def serializeProperty(key, values):
     return quoteId(key) + (": " if ":" in key else ":") + serializeValues(values)
 
 
-def serializeProperties(props):
-    return " ".join([serializeProperty(k, v) for (k, v) in props.items()])
+def serializePropertiesOf(elem):
+    if "properties" in elem:
+        return " ".join([serializeProperty(k, v) for (k, v) in elem["properties"].items()])
+    else:
+        return ""
 
 
 def serializeNode(node):
     parts = [
         quoteId(node["id"]),
-        serializeLabels(node["labels"]),
-        serializeProperties(node["properties"])
+        serializeLabelsOf(node),
+        serializePropertiesOf(node)
     ]
     return " ".join([p for p in parts if p != ""])
 
@@ -47,8 +53,8 @@ def serializeEdge(edge):
         quoteId(edge["from"]),
         ("--" if undirected else "->"),
         quoteId(edge["to"]),
-        serializeLabels(edge["labels"]),
-        serializeProperties(edge["properties"])
+        serializeLabelsOf(edge),
+        serializePropertiesOf(edge)
     ]
     if "id" in edge and edge["id"]:
         parts.insert(0, edge["id"] + ":")
@@ -56,6 +62,6 @@ def serializeEdge(edge):
 
 
 def serializeGraph(graph):
-    nodes = [serializeNode(n) for n in graph["nodes"]]
-    edges = [serializeEdge(n) for n in graph["edges"]]
+    nodes = [serializeNode(n) for n in graph["nodes"]] if "nodes" in graph else []
+    edges = [serializeEdge(n) for n in graph["edges"]] if "edges" in graph else []
     return "\n".join([*nodes, *edges])
